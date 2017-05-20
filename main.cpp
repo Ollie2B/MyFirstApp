@@ -3,7 +3,7 @@
 
 #include <iostream>
 #include <string>
-#include <util/random.h>
+#include <random>
 #include <ctime>
 
 
@@ -19,7 +19,7 @@ int main()
     //random number things
 
     mt19937 randomGenerator (time(0));
-    uniform_real_distribution<float> attackRoll (0.0f, 1.0f);
+    uniform_real_distribution <float> attackRoll (0.0f, 1.0f);
 
 
     //interface
@@ -43,47 +43,90 @@ int main()
 
     int humanHealth = 500;
     float humanDmg = 13.5f;
-    int humanArmor 20;
+    int humanArmor = 20;
+    float humanMissRate = 0.1f;
 
-    int skelletonHealth 150;
-    float skelletonDmg 2.4f;
-    int skelletonArmor 2;
-
-    //iniciative roll
-
-    uniform_int_distribution<int> diceRoll (1, 6);
-
-   // if function to see who goes First
+    int skelletonHealth = 150;
+    float skelletonDmg = 2.4f;
+    int skelletonArmor = 2;
+    float skelletonMissRate = 0.4f ;
+  
+    while (humans != 0 || skelletons != 0) {    //loop till one team has 0 left
 
 
-    //attack roll vs health roll
+        //turn based fight
 
+        while (humanHealth > 0 || skelletonHealth > 0) {    //loop till winner
 
-    //zombie attack if he won iniciative
+        //iniciative roll
 
-    //human attack if he won iniciative
+            uniform_int_distribution <int> diceRoll (1, 6);
+            diceRoll (randomGenerator);
 
-    //then if alive, zombie attack if he lost iniciative
+        //attack roll vs health roll //all attack rolls check if you hit or miss the target
 
-    //then if alive, human attack if he lost iniciative
+            if (diceRoll =< 3) {                //human attack if he won iniciative 
+                attackRoll (randomGenerator); 
+                if (attackRoll > humanMissRate)   {
+                    skelletonHealth = skelletonHealth - humanDmg;
+                }
 
-    //loop till winner
+                if (skelletonHealth > 0) {      //if alive, skelleton attack if he lost iniciative
+                    attackRoll (randomGenerator); 
+                    if (attackRoll > skelletonMissRate)  {
+                        humanHealth = humanHealth - skelletonDmg;
+                    }
 
+                }
 
+            } else {                            //skelleton attack if he won iniciative
+                attackRoll (randomGenerator);
+                if (attackRoll > skelletonMissRate)  {
+                        humanHealth = humanHealth - skelletonDmg;
+                    }
+                if (humanHealth > 0) {          //if alive, human attack if he lost iniciative
+                    attackRoll (randomGenerator);
+                    if (attackRoll > humanMissRate)   {
+                    skelletonHealth = skelletonHealth - humanDmg;
 
-    //if winner, next combat, if no more combat, end game
+                }           
+                
+                    }
+            
+            }
 
+        //check for casualty and substract from total
 
+            if (humanHealth =< 0) {
+            humanHealth = 500;
+            humans --;
+            } else {
+            skelletonHealth = 150;
+            skelletons --;
+            }
+    
+        }
+    }
 
-    //Outro
+    //game over
+
+    cout << "Battle is over!\n";
+
+    //outro
     //print results
 
+    cout << "there are " << humans << "humans and " << skelletons << "remaining.\n";
 
+    if (humans > 0) { 
+        cout << "Humans have won!\n";
+    } else {
+        cout << "Skelletons have won!\n";
+
+    }
 
 }
 
-
-
+//end
 
 
 
