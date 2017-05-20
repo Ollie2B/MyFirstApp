@@ -3,6 +3,7 @@
         {
             "name": "Mac",
             "includePath": [
+                "${workspaceRoot}/lib",
                 "${workspaceRoot}/lib/*",
                 "/usr/include/c++/4.2.1",
                 "/usr/local/include",
