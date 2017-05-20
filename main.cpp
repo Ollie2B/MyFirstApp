@@ -3,7 +3,7 @@
 
 #include <iostream>
 #include <string>
-#include <random>
+#include <random.h>
 #include <ctime>
 
 
@@ -19,7 +19,7 @@ int main()
     //random number things
 
     mt19937 randomGenerator (time(0));
-    uniform_real_distribution<float> attackRoll (0.0f, 1.0f)
+    uniform_real_distribution<float> attackRoll (0.0f, 1.0f);
 
 
     //interface
