@@ -3,7 +3,7 @@
 
 #include <iostream>
 #include <string>
-#include <random>
+#include <util/random.h>
 #include <ctime>
 
 
@@ -17,9 +17,6 @@ int main()
     int humans;
 
     //random number things
-
-    mt19937 randomGenerator (time(0));
-    uniform_real_distribution <float> attackRoll (0.0f, 1.0f);
 
 
     //interface
@@ -50,7 +47,10 @@ int main()
     float skelletonDmg = 2.4f;
     int skelletonArmor = 2;
     float skelletonMissRate = 0.4f ;
-  
+
+    int initiative = 1;
+    int attackRoll = 1;
+
     while (humans != 0 || skelletons != 0) {    //loop till one team has 0 left
 
 
@@ -59,20 +59,18 @@ int main()
         while (humanHealth > 0 || skelletonHealth > 0) {    //loop till winner
 
         //iniciative roll
-
-            uniform_int_distribution <int> diceRoll (1, 6);
-            diceRoll (randomGenerator);
+        initiative = randomInteger(1, 6);
 
         //attack roll vs health roll //all attack rolls check if you hit or miss the target
 
-            if (diceRoll =< 3) {                //human attack if he won iniciative 
-                attackRoll (randomGenerator); 
+            if (initiative <= 3) {                //human attack if he won iniciative 
+                attackRoll = randomInteger(1, 6); 
                 if (attackRoll > humanMissRate)   {
                     skelletonHealth = skelletonHealth - humanDmg;
                 }
 
                 if (skelletonHealth > 0) {      //if alive, skelleton attack if he lost iniciative
-                    attackRoll (randomGenerator); 
+                    attackRoll = randomInteger(1, 6); 
                     if (attackRoll > skelletonMissRate)  {
                         humanHealth = humanHealth - skelletonDmg;
                     }
@@ -80,12 +78,12 @@ int main()
                 }
 
             } else {                            //skelleton attack if he won iniciative
-                attackRoll (randomGenerator);
+                attackRoll = randomInteger(1, 6);
                 if (attackRoll > skelletonMissRate)  {
                         humanHealth = humanHealth - skelletonDmg;
                     }
                 if (humanHealth > 0) {          //if alive, human attack if he lost iniciative
-                    attackRoll (randomGenerator);
+                    attackRoll = randomInteger(1, 6);
                     if (attackRoll > humanMissRate)   {
                     skelletonHealth = skelletonHealth - humanDmg;
 
@@ -97,7 +95,7 @@ int main()
 
         //check for casualty and substract from total
 
-            if (humanHealth =< 0) {
+            if (humanHealth <= 0) {
             humanHealth = 500;
             humans --;
             } else {
